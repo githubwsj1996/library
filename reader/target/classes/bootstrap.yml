@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: reader
+  cloud:
+    config:
+      label: master
+      discovery:
+        enabled: true
+        service-id: CONFIGSERVER
+      profile: dev
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+</head>
+<body style=" background-image: url('/images/book3.jpg');background-size: 100% ">
+<div class="layui-container" style="margin-top: 50px;">
+
+    <div class="layui-container" style="width: 500px;height: 330px;padding-top: 60px;">
+        <form class="layui-form" action="/bookAdmin/saveReader" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">读者账号：</label>
+                <div class="layui-inline">
+                    <input type="text" name="username" lay-verify="required" placeholder="请输入读者账号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">账号密码：</label>
+                <div class="layui-inline">
+                    <input type="text" name="password" lay-verify="required" placeholder="请输入账号密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">真实姓名：</label>
+                <div class="layui-inline">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入真实姓名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别：</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="gender" value="男" title="男" checked="">
+                    <input type="radio" name="gender" value="女" title="女">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">电话号码：</label>
+                <div class="layui-inline">
+                    <input type="text" name="tel" lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">证件号：</label>
+                <div class="layui-inline">
+                    <input type="text" name="cardid" lay-verify="required" placeholder="请输入证件号码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <button class="layui-btn" lay-submit="" lay-filter="demo2" style="margin-left: 160px;">添加读者</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'element'], function(){
+        var form = layui.form;
+        var element = layui.element;
+
+        //自定义验证规则
+        form.verify({
+            username: function(value){
+                if(value.length == 0){
+                    return "用户名不能为空";
+                }
+            },
+            password: [/^[A-Za-z0-9]+$/,"密码必须由数字和字母组成"],
+            name: [/^[\u4e00-\u9fa5]+$/,"请输入正确的姓名"],
+            tel: [/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/,"请输入正确的电话"],
+            cardid: [/^\d{15}|\d{}18$/,"请输入正确的证件编号"]
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sj.repository.BookCaseRepository">
+
+    <select id="findAll" resultType="BookCase">
+        select * from bookcase
+    </select>
+
+    <select id="findById" resultType="BookCase" parameterType="int" >
+        select * from bookcase where id=#{id}
+    </select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sj.repository.ReaderRepository">
+    <select id="findAll" resultType="Reader">
+        select * from reader limit #{param1},#{param2}
+    </select>
+
+    <select id="findById" resultType="Reader" parameterType="int">
+        select * from reader where id=#{id}
+    </select>
+
+    <select id="countReader" resultType="int">
+        select count(*) from reader
+    </select>
+
+    <insert id="saveReader" parameterType="Reader">
+        insert into reader(username,password,name,tel,cardid,gender) values(#{username},#{password},#{name},#{tel},#{cardid},#{gender})
+    </insert>
+
+    <delete id="deleteReader" parameterType="int">
+        delete from reader where id=#{id}
+    </delete>
+
+    <update id="updateReader" parameterType="Reader">
+        update reader set username=#{username},password=#{password},name=#{name},tel=#{tel},cardid=#{cardid},gender=#{gender} where id=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>还书跟踪</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+</head>
+<body style=" background-image: url('/images/book3.jpg');background-size: 100%;background-repeat: no-repeat; background-attachment: fixed; ">
+<div class="layui-container" style="width: 730px;height: 600px;margin-top: 0px;padding-top: 60px;">
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+
+            table.render({
+                elem: '#test'
+                ,url:'/borrow/findReturn'
+                ,title: '还书跟踪'
+                ,cols: [
+                    [
+                        {field:'id', width:100, title: '编号', sort: true}
+                        , {
+                        field: 'bookname', width: 200, title: '图书', templet: function (data) {
+                            return data.book.name
+                        }
+                    }
+                        , {
+                        field: 'readername', width: 100, title: '读者', templet: function (data) {
+                            return data.reader.name
+                        }
+                    }
+                        ,{field:'returnTime', width:200, title: '还书时间'}
+                        ,{
+                            field: 'AdminName', width: 100, title: '还书受理人', templet: function (data) {
+                                return data.bookAdmin.username
+                            }
+                        }
+                    ]
+                ]
+                ,page: true
+            });
+
+        });
+    </script>
+
+</div>
+<script>
+    //二级菜单联动
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

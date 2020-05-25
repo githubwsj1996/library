@@ -1,0 +1,66 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>读者信息</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all" />
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+</head>
+<body style=" background-image: url('/images/book3.jpg');background-size: 100% ">
+<div class="layui-container" style="width: 960px;height: 600px;margin-top: 0px;padding-top: 60px;  ">
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="delete" style="background-color: red" >删除</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit" >修改</a>
+    </script>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+
+            table.render({
+                elem: '#test'
+                ,url:'/bookAdmin/findAllReader'
+                ,title: '读者信息'
+                ,cols: [
+                    [
+                        {field:'id', width:100, title: '读者编号'}
+                        ,{field:'username', width:110, title: '读者账号'}
+                        ,{field:'password', width:110, title: '账号密码'}
+                        ,{field:'name', width:100, title: '真实姓名'}
+                        ,{field: 'gender', width: 80, title: '性别', sort: true}
+                        ,{field: 'tel', width: 140, title: '电话号码', sort: true}
+                        ,{field: 'cardid', width: 160, title: '证件号', sort: true}
+                        ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:120}
+                    ]
+                ]
+                ,page: true
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'delete'){
+                    layer.confirm('确定要删除？', function(index) {
+                        window.location.href = "/bookAdmin/deleteReader/" + data.id;
+                        layer.close(index);
+                    });
+                }if(obj.event === 'edit'){
+                        window.location.href = "/bookAdmin/findByReaderId/" + data.id;
+                }
+
+            });
+        });
+    </script>
+
+</div>
+<script>
+    //二级菜单联动
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

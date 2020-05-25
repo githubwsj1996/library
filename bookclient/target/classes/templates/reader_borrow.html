@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>读者借阅单</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+</head>
+<body style=" background-image: url('/images/book3.jpg');background-size: 100%;background-repeat: no-repeat; background-attachment: fixed; ">
+<div class="layui-container" style="width: 960px;height: 600px;margin-top: 0px;padding-top: 60px;">
+
+    <div style="margin-left: 460px; width: 300px;">
+        <a href="/bookMenu/redirect/bookMenu">首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/bookMenu/redirect/reader_borrow" th:text="${session.reader.name}"></a>&nbsp;|<a href="/borrow/exportReaderBorrow">导出数据</a>&nbsp;<a href="/account/logout">&nbsp;&nbsp;<button class="layui-btn layui-btn-warm layui-btn-radius">退出</button></a>
+    </div>
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+
+            table.render({
+                elem: '#test'
+                ,url:'/borrow/findByReaderId'
+                ,title: '读者借阅信息'
+                ,cols: [
+                    [
+                        {field:'id', width:100, title: '编号', sort: true}
+                        , {
+                        field: 'bookname', width: 200, title: '图书', templet: function (data) {
+                            return data.book.name
+                        }
+                    }
+                        , {
+                        field: 'name', width: 100, title: '读者', templet: function (data) {
+                            return data.reader.name
+                        }
+                    }
+                        ,{field:'borrowTime', width:200, title: '借书时间'}
+                        ,{field:'returnTime',width:200,  title: '还书时间'}
+                        ,{field:'state', width:160, title: '借书状态',templet:function(data){
+                            var result = "";
+                            switch (data.state) {
+                                case 0:
+                                    result = "未审核";
+                                    break;
+                                case 1:
+                                    result = "审核通过";
+                                    break;
+                                case 2:
+                                    result = "审核未通过";
+                                    break;
+                                case 3:
+                                    result = "已归还";
+                                    break;
+                            }
+                            return result
+                        }
+                    }
+                    ]
+                ]
+                ,page: true
+            });
+
+        });
+    </script>
+
+</div>
+<script>
+    //二级菜单联动
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

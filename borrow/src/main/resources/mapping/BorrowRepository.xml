@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sj.repository.BorrowRepository">
+
+    <insert id="saveBorrow" parameterType="com.sj.entity.Borrow">
+        insert into borrow(bookid,readerid,borrowtime,returntime,state) values(#{book.id},#{reader.id},#{borrowTime},#{returnTime},0)
+    </insert>
+
+    <resultMap id="BorrowMap" type="Borrow">
+        <id property="id" column="id"></id>
+        <result property="borrowTime" column="borrowtime"></result>
+        <result property="returnTime" column="returntime"></result>
+        <result property="state" column="state"></result>
+        <association property="book"  select="com.sj.repository.BookMenuRepository.findById" column="bookid"></association>
+        <association property="reader" select="com.sj.repository.ReaderRepository.findById" column="readerid"></association>
+        <association property="admin" select="com.sj.repository.BookAdminRepository.findById" column="adminid"></association>
+    </resultMap>
+    <select id="findByReaderId" resultMap="BorrowMap" >
+        select * from borrow where readerid=#{param3} limit #{param1},#{param2}
+    </select>
+
+    <select id="countReaderId" resultType="int" parameterType="int">
+        select count(*) from borrow where readerid=#{readerid}
+    </select>
+
+    <select id="findAllByState" resultMap="BorrowMap" >
+        select * from borrow where state=#{param3} limit #{param1},#{param2}
+    </select>
+
+    <select id="countState" resultType="int">
+        select count(*) from borrow where state=0;
+    </select>
+
+    <update id="updateBorrow">
+        update borrow set adminid=#{param2},state=#{param3} where id=#{param1}
+    </update>
+    
+    <select id="findBackBook" resultMap="BorrowMap">
+        select * from borrow where state=1 limit #{param1},#{param2}
+    </select>
+
+    <select id="countBack" resultType="int">
+        select count(*) from borrow where state=1
+    </select>
+
+    <update id="updateBorrowBack" >
+        update borrow set adminid=#{param2},returntime=#{param3},state=#{param4} where id=#{param1}
+    </update>
+    
+    <insert id="saveReturn" parameterType="com.sj.entity.ReturnBook">
+        insert into returnbook(bookid,readerid,returntime,adminid) values(#{book.id},#{reader.id},#{returnTime},#{bookAdmin.id})
+    </insert>
+
+    <resultMap id="returnMap" type="ReturnBook">
+        <id property="id" column="id"></id>
+        <result property="returnTime" column="returntime"></result>
+        <association property="book" select="com.sj.repository.BookMenuRepository.findById" column="bookid"></association>
+        <association property="reader" select="com.sj.repository.ReaderRepository.findById" column="readerid"></association>
+        <association property="bookAdmin" select="com.sj.repository.BookAdminRepository.findById" column="adminid"></association>
+    </resultMap>
+    <select id="findReturnByAdmin" resultMap="returnMap">
+        select * from returnbook where adminid=#{param1} limit #{param2},#{param3}
+    </select>
+
+    <select id="countAdmin" resultType="int" parameterType="int">
+        select count(*) from returnbook where adminid=#{adminid}
+    </select>
+
+
+    <select id="findBookIdCount" resultMap="BorrowMap">
+        select * from borrow where state in (1,3) group by bookid
+    </select>
+
+    <select id="count" resultType="int">
+        select count(bookid) from borrow where state in (1,3) group  by bookid
+    </select>
+
+    <select id="findBorrowByAdmin" resultMap="BorrowMap" parameterType="int">
+        select id,bookid,readerid,borrowtime,returntime,adminid from borrow where adminid=#{adminid}
+    </select>
+
+    <select id="findBorrowByReader" resultMap="BorrowMap" parameterType="int">
+        select id,bookid,readerid,borrowtime,returntime,state from borrow where readerid=#{readerid}
+    </select>
+</mapper>

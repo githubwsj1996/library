@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sj.repository.BookMenuRepository">
+    <resultMap id="BookMenuMap" type="com.sj.entity.Book">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="author" column="author"></result>
+        <result property="publish" column="publish"></result>
+        <result property="pages" column="pages"></result>
+        <result property="price" column="price"></result>
+        <association property="bookcase" javaType="BookCase" select="com.sj.repository.BookCaseRepository.findById" column="bookcaseid"></association>
+    </resultMap>
+    <select id="findAll" resultMap="BookMenuMap" >
+        select * from book  where abled=1 limit #{param1},#{param2}
+    </select>
+
+    <select id="findById" resultMap="BookMenuMap" parameterType="int">
+        select * from book where id=#{id}
+    </select>
+
+    <select id="save" parameterType="com.sj.entity.Book">
+        insert  into book (name,author,publish,pages,price,bookcaseid,abled) value (#{name},#{author},#{publish},#{pages},#{price},#{bookcase.id},1)
+    </select>
+
+    <select id="deleteById" parameterType="int">
+        delete from book where id=#{id}
+    </select>
+
+    <update id="updateBook" parameterType="com.sj.entity.Book">
+        update book set name=#{name},author=#{author},publish=#{publish},pages=#{pages},price=#{price},bookcaseid=#{bookcase.id} where id=#{id}
+    </update>
+
+    <select id="count" resultType="int">
+        select count(*) from book where abled=1
+    </select>
+
+    <update id="updateAbled" parameterType="int">
+        update book set abled=0 where id=#{id}
+    </update>
+
+    <update id="updateAbledById" parameterType="int">
+        update book set abled=1 where id=#{id}
+    </update>
+</mapper>
